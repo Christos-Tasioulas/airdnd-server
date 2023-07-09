@@ -8,7 +8,10 @@ module.exports = (sequelize, DataTypes) => {
         lastname: {type: DataTypes.STRING, allowNull: false},
         email: {type: DataTypes.STRING, allowNull: false},
         phoneNumber: {type: DataTypes.STRING, allowNull: false},
-        image: {type: DataTypes.STRING}
+        image: {type: DataTypes.STRING},
+        isAdmin: {type: DataTypes.BOOLEAN, allowNull: false},
+        isLandlord: {type: DataTypes.BOOLEAN, allowNull: false},
+        isTenant: {type: DataTypes.BOOLEAN, allowNull: false}
     })
 
     return User
