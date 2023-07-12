@@ -15,7 +15,8 @@ const addUser = async (req,res) => {
         image: req.body.image,
         isAdmin: req.body.isAdmin,
         isLandlord: req.body.isLandlord,
-        isTenant: req.body.isTenant
+        isTenant: req.body.isTenant,
+        isApproved: req.body.isApproved
     })
 
     res.status(200).json({message: "Successfully created"})

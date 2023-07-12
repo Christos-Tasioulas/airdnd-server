@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
         image: {type: DataTypes.STRING},
         isAdmin: {type: DataTypes.BOOLEAN, allowNull: false},
         isLandlord: {type: DataTypes.BOOLEAN, allowNull: false},
-        isTenant: {type: DataTypes.BOOLEAN, allowNull: false}
+        isTenant: {type: DataTypes.BOOLEAN, allowNull: false},
+        isApproved: {type: DataTypes.BOOLEAN, allowNull: false}
     })
 
     return User
