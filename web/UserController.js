@@ -28,11 +28,29 @@ const addUser = async (req, res) => {
   
 
 const getAllUsers = async (req,res) => {
-    let users = await User.findAll()
-    res.status(200).json({message: users})
+  let users = await User.findAll()
+  res.status(200).json({message: users})
 }
+
+const getUsersByUsername = async (req, res) => {
+  console.log(req.params.username)
+  const username = req.params.username;
+
+  try {
+    const users = await User.findAll({
+      where: { username: username },
+    });
+
+    res.status(200).json({message: users});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to retrieve users by username" });
+  }
+};
+
 
 module.exports = {
     addUser,
     getAllUsers,
+    getUsersByUsername
 }
