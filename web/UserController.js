@@ -60,10 +60,24 @@ const getUserById = async (req, res) => {
   }
 };
 
+const approveUser = async (req, res) => {
+  try {
+    await User.update(
+      {isApproved: req.body.isApproved},
+      {where: {id: req.body.id}}
+    )
+    res.status(200).json({message: "Successfully updated"});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to retrieve user by id" });
+  }
+}
+
 
 module.exports = {
     addUser,
     getAllUsers,
     getUsersByUsername,
-    getUserById
+    getUserById,
+    approveUser
 }
