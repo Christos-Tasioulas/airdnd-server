@@ -6,5 +6,6 @@ router.get('/getAllUsers', userController.getAllUsers)
 router.get('/getUsersByUsername/:username', userController.getUsersByUsername)
 router.get('/getUserById/:id', userController.getUserById)
 router.put('/approveUser', userController.approveUser)
+router.put('/updateUser', userController.updateUser)
 
 module.exports = router

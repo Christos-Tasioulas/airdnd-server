@@ -69,9 +69,37 @@ const approveUser = async (req, res) => {
     res.status(200).json({message: "Successfully updated"});
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Failed to retrieve user by id" });
+    res.status(500).json({ message: "Failed to approve user" });
   }
 }
+
+const updateUser = async (req, res) => {
+  try {
+    const updatedData = {
+      username: req.body.username,
+      password: req.body.password,
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      email: req.body.email,
+      phoneNumber: req.body.phoneNumber,
+      image: req.body.image,
+      isAdmin: req.body.isAdmin,
+      isLandlord: req.body.isLandlord,
+      isTenant: req.body.isTenant,
+      isApproved: req.body.isApproved,
+    };
+
+    await User.update(updatedData, {
+      where: { id: req.body.id },
+    });
+
+    res.status(200).json({ message: "Successfully updated" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to update user" });
+  }
+};
+
 
 
 module.exports = {
@@ -79,5 +107,6 @@ module.exports = {
     getAllUsers,
     getUsersByUsername,
     getUserById,
-    approveUser
+    approveUser,
+    updateUser
 }
