@@ -1,6 +1,8 @@
 const userController = require('../web/UserController.js')
 const router = require('express').Router()
 
+// These are all the paths that the server app includes as far as the user table is concerned
+
 router.post('/addUser', userController.addUser)
 router.get('/getAllUsers', userController.getAllUsers)
 router.get('/getUsersByUsername/:username', userController.getUsersByUsername)

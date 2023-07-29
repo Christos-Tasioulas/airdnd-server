@@ -1,3 +1,4 @@
+// This is where the server app starts
 const express = require('express')
 const cors = require("cors");
 const app = express()
@@ -13,6 +14,7 @@ app.use(express.json())
 const userRouter = require('./routes/userRoutes.js')
 app.use('/user', userRouter)
 
+// Template default routes for the app
 app.get('/', (req,res) => {
     res.status(200).json({message: "Home Page"})
 })
