@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 const app = express()
 
 // Set up Global configuration access
-dotenv.config();
+dotenv.config({ path: './configurations/Config.env' });
 
 const port = process.env.PORT
 //const origin = `https://localhost:${port}`

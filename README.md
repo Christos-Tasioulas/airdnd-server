@@ -6,3 +6,5 @@
 Συστήνεται η χρήση των εξής εφαρμογών:
 - MySQLWorkbench
 - Postman
+
+Το Config.env.example ειναι το template για όλα τα configurations που είναι επισφαλές να υπάρχουν στο GitHub

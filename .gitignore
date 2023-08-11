@@ -129,6 +129,5 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# .env files - it doesn't matter work for some reason with the abpve commands
-ServerConfig.env
-DataBaseConfig.env
+# .env files - it doesn't matter work for some reason with the above commands
+Config.env

@@ -3,7 +3,7 @@ dotenv.config()
 
 /**
  * This includes all the configurations needed to connect the application with the database.
- * Feel free to change the username and password as desired.
+ * Feel free to change the username and password as desired in Config.env.
  */
 module.exports= {
     host: process.env.DB_HOST,
