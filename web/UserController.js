@@ -1,7 +1,8 @@
 const { Sequelize } = require('sequelize');
 const db = require('../model')
+const jwt = require('jsonwebtoken');
+const ms = require('ms');
 const User = db.users
-const Role = db.roles
 
 // Request using POST method that adds a user to the database
 const addUser = async (req, res) => {
@@ -27,6 +28,24 @@ const addUser = async (req, res) => {
     res.status(500).json({ message: "Failed to create user" });
   }
 };
+
+const generateToken = async (req, res) => {
+  // Validate User Here
+  // Then generate JWT Token
+
+  let jwtSecretKey = process.env.JWT_SECRET_KEY;
+  const expiresIn = '1h'; // Token will expire in 1 hour
+  let data = {
+      time: Date(),
+      id: req.body.id,
+      username: req.body.username,
+      password: req.body.password
+  }
+
+  const token = jwt.sign(data, jwtSecretKey, { expiresIn });
+
+  res.send(token);
+}
   
 // Request using GET method that retrieves all user information from the database
 const getAllUsers = async (req,res) => {
@@ -63,6 +82,29 @@ const getUserById = async (req, res) => {
     res.status(500).json({ message: "Failed to retrieve user by id" });
   }
 };
+
+const validateToken = async (req, res) => {
+  // Tokens are generally passed in the header of the request
+  // Due to security reasons.
+
+  let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
+  let jwtSecretKey = process.env.JWT_SECRET_KEY;
+
+  try {
+    const token = req.header(tokenHeaderKey);
+
+    const verified = jwt.verify(token, jwtSecretKey);
+    if(verified){
+      return res.send("Successfully Verified");
+    }else{
+      // Access Denied
+      return res.status(401).send(error);
+    }
+  } catch (error) {
+    // Access Denied
+    return res.status(401).send(error);
+  }
+}
 
 // Request using PUT method that updates the isApproved field of the user given his id
 const approveUser = async (req, res) => {
@@ -109,9 +151,11 @@ const updateUser = async (req, res) => {
 
 module.exports = {
     addUser,
+    generateToken,
     getAllUsers,
     getUsersByUsername,
     getUserById,
+    validateToken,
     approveUser,
     updateUser
 }
