@@ -1,8 +1,17 @@
-// This is where the server app starts
+/* This is where the server app starts */
+
+// Module requirements
 const express = require('express')
 const cors = require("cors");
+const dotenv = require('dotenv');
+const jwt = require('jsonwebtoken');
+
 const app = express()
-const port = 5000
+
+// Set up Global configuration access
+dotenv.config();
+
+const port = process.env.PORT
 //const origin = `https://localhost:${port}`
 //const corsOptions = {origin: origin}
 
