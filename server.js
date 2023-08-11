@@ -20,8 +20,13 @@ app.use(cors(/*corsOptions*/))
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 
+// User Routes
 const userRouter = require('./routes/userRoutes.js')
 app.use('/user', userRouter)
+
+// Update Key Request
+const { updateKeys } = require('./configurations/updateKeys.js')
+app.post('/updateKeys', updateKeys);
 
 // Template default routes for the app
 app.get('/', (req,res) => {
