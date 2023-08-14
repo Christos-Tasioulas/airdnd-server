@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 const db = require('../model')
 const jwt = require('jsonwebtoken');
-const ms = require('ms');
+// const ms = require('ms');
 const User = db.users
 
 // Request using POST method that adds a user to the database
@@ -35,6 +35,7 @@ const generateToken = async (req, res) => {
 
   let jwtSecretKey = process.env.JWT_SECRET_KEY;
   const expiresIn = '1h'; // Token will expire in 1 hour
+
   let data = {
       time: Date(),
       id: req.body.id,
@@ -43,8 +44,9 @@ const generateToken = async (req, res) => {
   }
 
   const token = jwt.sign(data, jwtSecretKey, { expiresIn });
+  console.log(token);
 
-  res.send(token);
+  res.status(200).json({token: token});
 }
   
 // Request using GET method that retrieves all user information from the database
@@ -93,10 +95,28 @@ const validateToken = async (req, res) => {
   try {
     const token = req.header(tokenHeaderKey);
 
-    const verified = jwt.verify(token, jwtSecretKey);
+    console.log('Token:', token);
+    const tokenWithoutBearer = token.replace("Bearer ", "");
+    console.log('Token without Bearer:', tokenWithoutBearer);
+
+    const verified = jwt.verify(tokenWithoutBearer, jwtSecretKey);
+
+    const decodedToken = jwt.decode(tokenWithoutBearer);
+    console.log('Decoded Token:', decodedToken);
+
     if(verified){
-      return res.send("Successfully Verified");
-    }else{
+
+      try {
+        const user = await User.findOne({
+          where: { id: decodedToken.id },
+        });
+        res.status(200).json({message: user});
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Failed to retrieve user by id" });
+      }
+
+    } else{
       // Access Denied
       return res.status(401).send(error);
     }
