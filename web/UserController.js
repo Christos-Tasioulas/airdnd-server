@@ -59,14 +59,18 @@ const getAllUsers = async (req,res) => {
 }
 
 // Request using GET method that retrieves all users that share the same username as given from the parameters of the request
-const getUsersByUsername = async (req, res) => {
+const isUsernameTaken = async (req, res) => {
   const username = req.params.username;
 
   try {
+
     const users = await User.findAll({
       where: { username: username },
     });
-    res.status(200).json({message: users});
+
+    const message = users.length > 0 ? "Username already taken" : ""
+    res.status(200).json({message: message});
+    
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to retrieve users by username" });
@@ -89,43 +93,57 @@ const getUserById = async (req, res) => {
 };
 
 const validateToken = async (req, res) => {
-  // Tokens are generally passed in the header of the request
-  // Due to security reasons.
-
   let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
   let jwtSecretKey = process.env.JWT_SECRET_KEY;
 
   try {
     const token = req.header(tokenHeaderKey);
-
-    console.log('Token:', token);
     const tokenWithoutBearer = token.replace("Bearer ", "");
-    console.log('Token without Bearer:', tokenWithoutBearer);
-
     const verified = jwt.verify(tokenWithoutBearer, jwtSecretKey);
 
-    const decodedToken = jwt.decode(tokenWithoutBearer);
-    console.log('Decoded Token:', decodedToken);
-
-    if(verified){
-
-      try {
-        const user = await User.findOne({
-          where: { id: decodedToken.id },
-        });
-        res.status(200).json({message: user});
-      } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Failed to retrieve user by id" });
-      }
-
-    } else{
-      // Access Denied
-      return res.status(401).send(error);
+    if (verified) {
+      return res.status(200).json({ message: "Token successfully verified" });
+    } else {
+      return res.status(401).json({ error: "Access denied: Invalid token" });
     }
   } catch (error) {
+    return res.status(401).json({ error: "Access denied: Invalid token" });
+  }
+};
+
+const decodeToken = async (req, res) => {
+
+  let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
+
+  try {
+
+    const token = req.header(tokenHeaderKey);
+    const tokenWithoutBearer = token.replace("Bearer ", "");
+    const decodedToken = jwt.decode(tokenWithoutBearer);
+
+    if (decodedToken) {
+
+      return res.status(200).json(
+        {
+          time: decodedToken.time,
+          id: decodedToken.id,
+          username: decodedToken.username,
+          password: decodedToken.password,
+          isAdmin: decodedToken.isAdmin,
+          isLandlord: decodedToken.isLandlord,
+          isTenant: decodedToken.isTenant 
+        }
+      )
+
+    } else {
+      return res.status(401).send(error)
+    }
+    
+  } catch (error) {
+    
     // Access Denied
     return res.status(401).send(error);
+
   }
 }
 
@@ -176,9 +194,10 @@ module.exports = {
     addUser,
     generateToken,
     getAllUsers,
-    getUsersByUsername,
+    isUsernameTaken,
     getUserById,
     validateToken,
+    decodeToken,
     approveUser,
     updateUser
 }
