@@ -37,10 +37,13 @@ const generateToken = async (req, res) => {
   const expiresIn = '1h'; // Token will expire in 1 hour
 
   let data = {
-      time: Date(),
-      id: req.body.id,
-      username: req.body.username,
-      password: req.body.password
+    time: Date(),
+    id: req.body.id,
+    username: req.body.username,
+    password: req.body.password,
+    isAdmin: req.body.isAdmin,
+    isLandlord: req.body.isLandlord,
+    isTenant: req.body.isTenant
   }
 
   const token = jwt.sign(data, jwtSecretKey, { expiresIn });
