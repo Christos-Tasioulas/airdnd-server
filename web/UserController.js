@@ -47,7 +47,6 @@ const generateToken = async (req, res) => {
   }
 
   const token = jwt.sign(data, jwtSecretKey, { expiresIn });
-  console.log(token);
 
   res.status(200).json({token: token});
 }
@@ -70,7 +69,7 @@ const isUsernameTaken = async (req, res) => {
 
     const message = users.length > 0 ? "Username already taken" : ""
     res.status(200).json({message: message});
-    
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to retrieve users by username" });
@@ -89,6 +88,21 @@ const getUserById = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to retrieve user by id" });
+  }
+};
+
+// Request using GET method that retrieves the user with the id given from the parameters of the request
+const getUserByUsername = async (req, res) => {
+  const username = req.params.username;
+
+  try {
+    const user = await User.findOne({
+      where: { username: username },
+    });
+    res.status(200).json({message: user});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to retrieve user by username" });
   }
 };
 
@@ -196,6 +210,7 @@ module.exports = {
     getAllUsers,
     isUsernameTaken,
     getUserById,
+    getUserByUsername,
     validateToken,
     decodeToken,
     approveUser,
