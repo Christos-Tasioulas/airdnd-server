@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { sequelize } = require('sequelize');
 const db = require('../model')
 const jwt = require('jsonwebtoken');
 // const ms = require('ms');
@@ -203,6 +203,7 @@ const updateUser = async (req, res) => {
     res.status(500).json({ message: "Failed to update user" });
   }
 };
+
 
 module.exports = {
     addUser,
