@@ -35,6 +35,16 @@ db.sequelize = sequelize
 // Adding a users table inside the database
 db.users = require('./User.js')(sequelize, DataTypes)
 
+// Adding a listings table inside the database
+db.listings = require('./Listing.js')(sequelize, DataTypes)
+
+// Allowing One to Many Association between users and listings
+db.users.hasMany(db.listings, { as: "listings" });
+db.listings.belongsTo(db.listings, {
+  foreignKey: "landlordId",
+  as: "user",
+}); 
+
 /* Command that allows us to re-sync the database with the server whenever a change
  * is made to the code or the database 
  */ 

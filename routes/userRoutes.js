@@ -14,5 +14,4 @@ router.get('/decodeToken', userController.decodeToken)
 router.put('/approveUser', userController.approveUser)
 router.put('/updateUser', userController.updateUser)
 
-
 module.exports = router

@@ -23,6 +23,14 @@ app.use(express.json())
 const userRouter = require('./routes/userRoutes.js')
 app.use('/user', userRouter)
 
+// Listing Routes
+const listingRoutes = require('./routes/listingRoutes.js')
+app.use('/listing', listingRoutes)
+
+// Review Routes
+const reviewRoutes = require('./routes/reviewRoutes.js')
+app.use('/review', reviewRoutes)
+
 // Update Key Request
 const { updateKeys } = require('./configurations/updateKeys.js')
 app.post('/updateKeys', updateKeys);
