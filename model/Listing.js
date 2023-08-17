@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         bathroomsNumber: {type: DataTypes.INTEGER, allowNull: false},
         bedroomsNumber: {type: DataTypes.INTEGER, allowNull: false},
         squareMeters: {type: DataTypes.FLOAT, allowNull: false},
-        // filters: {type: DataTypes.STRING, allowNull: true},
+        // filters:
         amenities: {type: DataTypes.STRING, allowNull: false}, // List // paroxes
         spaceType: {type: DataTypes.STRING, allowNull: false},
         minPrice: {type: DataTypes.INTEGER, allowNull: false},
@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         hasLivingRoom: {type: DataTypes.BOOLEAN, allowNull: false},
         description: {type: DataTypes.TEXT, allowNull: true},
         isBooked: {type: DataTypes.BOOLEAN, allowNull: true},
+        userID: {type: DataTypes.INTEGER, allowNull: false},
     })
 
     return Listing

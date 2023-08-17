@@ -3,7 +3,7 @@ const db = require('../model')
 // const ms = require('ms');
 const Listing = db.listings
 
-// Request using POST method that adds a user to the database
+// Request using POST method that adds a listing to the database
 const addListing = async (req, res) => {
     console.log(req.body);
     try {
@@ -35,12 +35,13 @@ const addListing = async (req, res) => {
         hasLivingRoom: req.body.hasLivingRoom,
         description: req.body.description,
         isBooked: req.body.isBooked,
+        userId: req.body.userId,
       });
   
-      res.status(200).json({ message: "User created successfully" });
+      res.status(200).json({ message: "Listing created successfully" });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Failed to create user" });
+      res.status(500).json({ message: "Failed to create listing" });
     }
   };
 

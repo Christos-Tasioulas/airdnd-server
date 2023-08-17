@@ -11,6 +11,7 @@ const app = express()
 dotenv.config({ path: './configurations/Config.env' });
 
 const port = process.env.PORT
+const host = process.env.HOST
 //const origin = `https://localhost:${port}`
 //const corsOptions = {origin: origin}
 
@@ -44,6 +45,6 @@ app.all('*', (req,res) => {
     res.status(404).json({message: "Page not found"})
 })
 
-app.listen(port, () => {
-    console.log(`Server listening on port ${port}...`)
+app.listen(port, host, () => {
+    console.log(`Server listening on port ${host}:${port}...`)
 })
