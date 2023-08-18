@@ -5,7 +5,7 @@ const Listing = db.listings
 
 // Request using POST method that adds a listing to the database
 const addListing = async (req, res) => {
-    console.log(req.body);
+
     try {
       await Listing.create({
         id: req.body.id,
@@ -28,16 +28,16 @@ const addListing = async (req, res) => {
         map: req.body.map, 
         country: req.body.country,
         city: req.body.city,
-        neihbourhood: req.body.neihbourhood,
+        neighborhood: req.body.neighborhood,
         transit: req.body.transit,
         reviewCount: req.body.reviewCount,
         reviewAvg: req.body.reviewAvg,
         hasLivingRoom: req.body.hasLivingRoom,
         description: req.body.description,
         isBooked: req.body.isBooked,
-        userId: req.body.userId,
+        userId: req.body.userId
       });
-  
+
       res.status(200).json({ message: "Listing created successfully" });
     } catch (error) {
       console.error(error);
@@ -45,6 +45,56 @@ const addListing = async (req, res) => {
     }
   };
 
+  const searchListings = async (req, res) => {
+
+    const searchCriteria = {
+      country: req.params.country,
+      city: req.params.city,
+      neighborhood: req.params.neighborhood,
+      checkIn: req.params.checkIn,
+      checkOut: req.params.checkOut,
+      numPeople: req.params.numPeople,
+    };
+
+    console.log(searchCriteria)
+  
+    // Create an object to hold the dynamic query conditions
+    const whereConditions = {};
+
+    // Add conditions for non-blank fields
+    if (searchCriteria.country) {
+      whereConditions.country = searchCriteria.country;
+    }
+    if (searchCriteria.city) {
+      whereConditions.city = searchCriteria.city;
+    }
+    if (searchCriteria.neighborhood) {
+      whereConditions.neighborhood = searchCriteria.neighborhood;
+    }
+    if (searchCriteria.checkIn) {
+      whereConditions.checkIn = searchCriteria.checkIn;
+    }
+    if (searchCriteria.checkOut) {
+      whereConditions.checkOut = searchCriteria.checkOut;
+    }
+    if (searchCriteria.numPeople) {
+      whereConditions.maxGuests = searchCriteria.numPeople;
+    }
+
+    try {
+      const searchResults = await Listing.findAll({
+        where: whereConditions,
+      });
+  
+      res.status(200).json({ results: searchResults });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Search Failed" });
+    }
+  };
+
+
 module.exports = {
-    addListing
+    addListing,
+    searchListings
 }

@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
         id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement:true, allowNull: false},
         name: {type: DataTypes.STRING, allowNull: false},
         address: {type: DataTypes.STRING, allowNull: false},
-        photos: {type: DataTypes.STRING, allowNull: false}, // List URLs
+        photos: {type: DataTypes.STRING, allowNull: true}, // List URLs
         houseRules: {type: DataTypes.STRING, allowNull: true}, // List
         minimumLengthStay: {type: DataTypes.INTEGER, allowNull: false},
         checkIn: {type: DataTypes.DATEONLY, allowNull: false},
@@ -12,19 +12,19 @@ module.exports = (sequelize, DataTypes) => {
         maxGuests: {type: DataTypes.INTEGER, allowNull: false},
         bedsNumber: {type: DataTypes.INTEGER, allowNull: false},
         bathroomsNumber: {type: DataTypes.INTEGER, allowNull: false},
-        bedroomsNumber: {type: DataTypes.INTEGER, allowNull: false},
+        bedroomsNumber: {type: DataTypes.FLOAT, allowNull: false},
         squareMeters: {type: DataTypes.FLOAT, allowNull: false},
         // filters:
-        amenities: {type: DataTypes.STRING, allowNull: false}, // List // paroxes
+        amenities: {type: DataTypes.STRING, allowNull: true}, // List // paroxes
         spaceType: {type: DataTypes.STRING, allowNull: false},
         minPrice: {type: DataTypes.INTEGER, allowNull: false},
         // 
         dailyPrice: {type: DataTypes.INTEGER, allowNull: false},
-        map: {type: DataTypes.STRING, allowNull: false}, // URL
+        map: {type: DataTypes.STRING, allowNull: true}, // URL
         country: {type: DataTypes.STRING, allowNull: false},
         city: {type: DataTypes.STRING, allowNull: false},
-        neihbourhood: {type: DataTypes.STRING, allowNull: false},
-        transit: {type: DataTypes.STRING, allowNull: false}, // List
+        neighborhood: {type: DataTypes.STRING, allowNull: false},
+        transit: {type: DataTypes.STRING, allowNull: true}, // List
         reviewCount: {type: DataTypes.INTEGER, allowNull: false},
         reviewAvg: {type: DataTypes.FLOAT, allowNull: false},
         hasLivingRoom: {type: DataTypes.BOOLEAN, allowNull: false},
