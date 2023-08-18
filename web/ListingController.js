@@ -48,12 +48,12 @@ const addListing = async (req, res) => {
   const searchListings = async (req, res) => {
 
     const searchCriteria = {
-      country: req.params.country,
-      city: req.params.city,
-      neighborhood: req.params.neighborhood,
-      checkIn: req.params.checkIn,
-      checkOut: req.params.checkOut,
-      numPeople: req.params.numPeople,
+      country: req.query.country,
+      city: req.query.city,
+      neighborhood: req.query.neighborhood,
+      checkIn: req.query.checkInDate,
+      checkOut: req.query.checkOutDate,
+      numPeople: req.query.numPeople,
     };
 
     console.log(searchCriteria)
