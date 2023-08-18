@@ -54,6 +54,13 @@ db.reviews.belongsTo(db.users, {
   as: "user",
 });
 
+// Allowing One to Many Association between users and listings
+db.listings.hasMany(db.reviews, { as: "reviews" });
+db.reviews.belongsTo(db.listings, {
+  foreignKey: "listingId",
+  as: "listing",
+}); 
+
 /* Command that allows us to re-sync the database with the server whenever a change
  * is made to the code or the database 
  */ 

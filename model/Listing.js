@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         hasLivingRoom: {type: DataTypes.BOOLEAN, allowNull: false},
         description: {type: DataTypes.TEXT, allowNull: true},
         isBooked: {type: DataTypes.BOOLEAN, allowNull: true},
-        userID: {type: DataTypes.INTEGER, allowNull: false},
+        // userId: {type: DataTypes.INTEGER, allowNull: false},
     })
 
     return Listing
