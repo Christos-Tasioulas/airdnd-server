@@ -94,7 +94,37 @@ const addListing = async (req, res) => {
   };
 
 
+const getPlacesByLandlordId = async(req, res) => {
+  const landlordId = req.params.id
+
+  try {
+    const listings = await Listing.findAll({
+      where: { userId: landlordId },
+    });
+    res.status(200).json({message: listings});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to retrieve listings by Landlord id" });
+  }
+}
+
+const getListingById = async(req, res) => {
+  const id = req.params.id
+
+  try {
+    const listing = await Listing.findOne({
+      where: { id: id },
+    });
+    res.status(200).json({message: listing});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to retrieve listing by id" });
+  }
+}
+
 module.exports = {
     addListing,
-    searchListings
+    searchListings,
+    getPlacesByLandlordId,
+    getListingById
 }
