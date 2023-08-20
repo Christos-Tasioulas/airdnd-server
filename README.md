@@ -7,4 +7,4 @@
 - MySQLWorkbench
 - Postman
 
-Το Config.env.example ειναι το template για όλα τα configurations που είναι επισφαλές να υπάρχουν στο GitHub
+Το Config.env.example ειναι το template για όλα τα configurations που είναι επισφαλές να υπάρχουν στο GitHub.
