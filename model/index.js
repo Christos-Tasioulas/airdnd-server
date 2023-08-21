@@ -43,22 +43,27 @@ db.reviews = require('./Review.js')(sequelize, DataTypes)
 // Allowing One to Many Association between users and listings
 db.users.hasMany(db.listings, { as: "listings" });
 db.listings.belongsTo(db.users, {
-  foreignKey: "userId",
-  as: "user",
+  foreignKey: "userId", // User is the owner (User is a Landlord)
+  as: "User",
 }); 
 
 // Allowing One to Many Association between users and reviews
 db.users.hasMany(db.reviews, { as: "reviews" });
 db.reviews.belongsTo(db.users, {
   foreignKey: "userId",
-  as: "user",
+  as: "User", // User is the reviewer (User is a Tenant)
+  allowNull: false
+});
+db.reviews.belongsTo(db.users, {
+  foreignKey: "landlordId",
+  as: "Landlord"
 });
 
 // Allowing One to Many Association between users and listings
 db.listings.hasMany(db.reviews, { as: "reviews" });
 db.reviews.belongsTo(db.listings, {
   foreignKey: "listingId",
-  as: "listing",
+  as: "Listing",
 }); 
 
 /* Command that allows us to re-sync the database with the server whenever a change

@@ -23,7 +23,7 @@ const addListing = async (req, res) => {
         squareMeters: req.body.squareMeters,
         amenities: req.body.amenities,
         spaceType: req.body.spaceType,
-        minPrice: req.body.minPrice,
+        additionalPrice: req.body.additionalPrice,
         dailyPrice: req.body.dailyPrice,
         map: req.body.map, 
         country: req.body.country,
