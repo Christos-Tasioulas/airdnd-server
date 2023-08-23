@@ -122,9 +122,55 @@ const getListingById = async(req, res) => {
   }
 }
 
+// Request using PUT method that updates all the fields of the place given its id
+// ID NEVER CHANGES
+const updateListing = async (req, res) => {
+  try {
+    const updatedData = {
+      name: req.body.name,
+      address: req.body.address,
+      photos: req.body.photos,
+      houseRules: req.body.houseRules,
+      minimumLengthStay: req.body.minimumLengthStay,
+      checkIn: req.body.checkIn,
+      checkOut: req.body.checkOut,
+      maxGuests: req.body.maxGuests,
+      bedsNumber:req.body.bedsNumber,
+      bathroomsNumber: req.body.bathroomsNumber,
+      bedroomsNumber: req.body.bedroomsNumber,
+      squareMeters: req.body.squareMeters,
+      amenities: req.body.amenities,
+      spaceType: req.body.spaceType,
+      additionalPrice: req.body.additionalPrice,
+      dailyPrice: req.body.dailyPrice,
+      map: req.body.map, 
+      country: req.body.country,
+      city: req.body.city,
+      neighborhood: req.body.neighborhood,
+      transit: req.body.transit,
+      reviewCount: req.body.reviewCount,
+      reviewAvg: req.body.reviewAvg,
+      hasLivingRoom: req.body.hasLivingRoom,
+      description: req.body.description,
+      isBooked: req.body.isBooked,
+      userId: req.body.userId
+    };
+
+    await Listing.update(updatedData, {
+      where: { id: req.body.id },
+    });
+
+    res.status(200).json({ message: "Successfully updated" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to update listing" });
+  }
+};
+
 module.exports = {
     addListing,
     searchListings,
     getPlacesByLandlordId,
-    getListingById
+    getListingById,
+    updateListing
 }

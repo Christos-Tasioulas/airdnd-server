@@ -36,8 +36,8 @@ module.exports = (sequelize, DataTypes) => {
         checkOut: {type: DataTypes.DATEONLY, allowNull: false},
         maxGuests: {type: DataTypes.INTEGER, allowNull: false},
         bedsNumber: {type: DataTypes.INTEGER, allowNull: false},
-        bathroomsNumber: {type: DataTypes.INTEGER, allowNull: false},
-        bedroomsNumber: {type: DataTypes.FLOAT, allowNull: false},
+        bathroomsNumber: {type: DataTypes.FLOAT, allowNull: false},
+        bedroomsNumber: {type: DataTypes.INTEGER, allowNull: false},
         squareMeters: {type: DataTypes.FLOAT, allowNull: false},
 
         // List of amenities provided by the place
