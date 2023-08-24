@@ -167,10 +167,35 @@ const updateListing = async (req, res) => {
   }
 };
 
+const deleteListing = async (req, res) => {
+  try {
+    const listingId = req.params.id;
+
+    if (!listingId) {
+      return res.status(400).json({ message: "Listing ID is required in the request body" });
+    }
+
+    const deletionResult = await Listing.destroy({
+      where: { id: listingId },
+    });
+
+    if (deletionResult === 0) {
+      return res.status(404).json({ message: "Listing not found" });
+    }
+
+    res.status(200).json({ message: "Listing deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to delete listing" });
+  }
+};
+
+
 module.exports = {
     addListing,
     searchListings,
     getPlacesByLandlordId,
     getListingById,
-    updateListing
+    updateListing,
+    deleteListing
 }
