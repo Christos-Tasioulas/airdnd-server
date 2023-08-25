@@ -56,7 +56,8 @@ module.exports = (sequelize, DataTypes) => {
         spaceType: {type: DataTypes.STRING, allowNull: false},
         additionalPrice: {type: DataTypes.INTEGER, allowNull: false},
         dailyPrice: {type: DataTypes.INTEGER, allowNull: false},
-        map: {type: DataTypes.STRING, allowNull: true}, // URL
+        latitude: {type: DataTypes.FLOAT, allowNull: false},
+        longtitude: {type: DataTypes.FLOAT, allowNull: false},
         country: {type: DataTypes.STRING, allowNull: false},
         city: {type: DataTypes.STRING, allowNull: false},
         neighborhood: {type: DataTypes.STRING, allowNull: false},
