@@ -4,20 +4,49 @@
 const express = require('express')
 const cors = require("cors");
 const dotenv = require('dotenv');
-const tls = require('node:tls');
+// const tls = require('node:tls');
+const https = require("https")
+const http = require("http")
+const path = require("path")
+const fs = require("fs")
 
 const app = express()
+
+const httpsServer = https.createServer(
+    {
+        key: fs.readFileSync(path.join(__dirname, 
+            "certificates", "key.pem")),
+        cert: fs.readFileSync(path.join(__dirname,
+            "certificates", "cert.pem")),
+    },
+    app
+)
 
 // Set up Global configuration access
 dotenv.config({ path: './configurations/Config.env' });
 
 const port = process.env.PORT
 const host = process.env.HOST
-//const origin = `https://localhost:${port}`
-//const corsOptions = {origin: origin}
+// Define the allowed origins
+const allowedOrigins = [
+    'https://',
+    'https://',
+    'http://localhost:5000', // This is your development frontend origin
+];
+
+// Configure CORS with allowed origins
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, true);
+        } else {
+        callback(new Error('Not allowed by CORS'));
+        }
+    },
+};
 
 /* Middleware used to read body requests */
-app.use(cors(/*corsOptions*/))
+app.use(cors(corsOptions))
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 
@@ -46,8 +75,6 @@ app.all('*', (req,res) => {
     res.status(404).json({message: "Page not found"})
 })
 
-app.listen(port, host, () => {
+httpsServer.listen(port, host, () => {
     console.log(`Server listening on port ${host}:${port}...`)
 })
-
-// a
