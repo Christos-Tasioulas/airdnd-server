@@ -8,5 +8,4 @@
 - Postman
 
 Το Config.env.example ειναι το template για όλα τα configurations που είναι επισφαλές να υπάρχουν στο GitHub.
-
-set HTTPS=true&& set SSL_CRT_FILE=../airdnd-server/certificates/cert.pem&& set SSL_KEY_FILE=../airdnd-server/certificates/key.pem &&
+Ειναι χρήσιμο να υπάρχουν στο configurations directory τα αρχεία key.pem, csr.pem και cert.pem από τον openssl για να τρέξει η σελίδα στον HTTPS.
