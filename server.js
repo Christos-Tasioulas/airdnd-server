@@ -4,7 +4,6 @@
 const express = require('express')
 const cors = require("cors");
 const dotenv = require('dotenv');
-// const tls = require('node:tls');
 const https = require("https")
 const http = require("http")
 const path = require("path")
@@ -29,9 +28,7 @@ const port = process.env.PORT
 const host = process.env.HOST
 // Define the allowed origins
 const allowedOrigins = [
-    'https://',
-    'https://',
-    'http://localhost:5000', // This is your development frontend origin
+    'https://localhost:3000'
 ];
 
 // Configure CORS with allowed origins

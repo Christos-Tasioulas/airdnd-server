@@ -132,4 +132,4 @@ dist
 # .env files - it doesn't matter work for some reason with the above commands
 Config.env
 
-*.pem
+certificates/
