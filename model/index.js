@@ -38,7 +38,10 @@ db.users = require('./User.js')(sequelize, DataTypes)
 // Adding a listings table inside the database
 db.listings = require('./Listing.js')(sequelize, DataTypes)
 
+// Adding a reviews table inside the database
 db.reviews = require('./Review.js')(sequelize, DataTypes)
+
+db.messages = require('./Message.js')(sequelize, DataTypes)
 
 // Allowing One to Many Association between users and listings
 db.users.hasMany(db.listings, { as: "listings" });
@@ -65,6 +68,18 @@ db.reviews.belongsTo(db.listings, {
   foreignKey: "listingId",
   as: "Listing",
 }); 
+
+db.users.hasMany(db.messages, { as: "messages" });
+db.messages.belongsTo(db.users, {
+  foreignKey: "userId",
+  as: "User", // User is the sender
+  allowNull: false 
+});
+db.messages.belongsTo(db.users, {
+  foreignKey: "receiverId",
+  as: "Receiver",
+  allowNull: false 
+});
 
 /* Command that allows us to re-sync the database with the server whenever a change
  * is made to the code or the database 

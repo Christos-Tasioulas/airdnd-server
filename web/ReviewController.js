@@ -5,7 +5,7 @@ const Review = db.reviews
 
 // Request using POST method that adds a review to the database
 const addReview = async (req, res) => {
-    console.log(req.body);
+
     try {
       await Review.create({
         reviewId:  req.body.reviewId,
