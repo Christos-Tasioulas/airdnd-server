@@ -55,8 +55,32 @@ const getMessagesByUser = async (req, res) => {
   }
 }
 
+const deleteMessage = async (req, res) => {
+  try {
+    const messageId = req.params.id;
+
+    if (!messageId) {
+      return res.status(400).json({ message: "Message ID is required in the request body" });
+    }
+
+    const deletionResult = await Message.destroy({
+      where: { messageId: messageId },
+    });
+
+    if (deletionResult === 0) {
+      return res.status(404).json({ message: "Message not found" });
+    }
+
+    res.status(200).json({ message: "Message deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Message to delete listing" });
+  }
+};
+
 module.exports = {
     addMessage,
     getMessagesByUser,
-    getMessageById
+    getMessageById,
+    deleteMessage
 }
