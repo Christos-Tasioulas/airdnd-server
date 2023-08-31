@@ -1,6 +1,6 @@
 const { sequelize } = require('sequelize');
 const db = require('../model')
-// const ms = require('ms');
+const { Op, literal } = require('sequelize');
 const Listing = db.listings
 
 // Request using POST method that adds a listing to the database
@@ -55,6 +55,10 @@ const addListing = async (req, res) => {
       checkIn: req.query.checkInDate,
       checkOut: req.query.checkOutDate,
       numPeople: req.query.numPeople,
+      spaceType: req.query.spaceType,
+      minPrice: req.query.minPrice,
+      maxPrice: req.query.maxPrice,
+      amenities: req.query.amenities ? req.query.amenities.split(',') : []
     };
 
     console.log(searchCriteria)
@@ -72,19 +76,49 @@ const addListing = async (req, res) => {
     if (searchCriteria.neighborhood) {
       whereConditions.neighborhood = searchCriteria.neighborhood;
     }
-    if (searchCriteria.checkIn) {
-      whereConditions.checkIn = searchCriteria.checkIn;
+    
+    if (searchCriteria.checkIn && searchCriteria.checkOut) {
+      whereConditions.checkIn = {
+          [Op.lte]: searchCriteria.checkIn, // Less than or equal to
+      };
+      whereConditions.checkOut = {
+          [Op.gte]: searchCriteria.checkOut, // Greater than or equal to
+      };
     }
-    if (searchCriteria.checkOut) {
-      whereConditions.checkOut = searchCriteria.checkOut;
-    }
+
     if (searchCriteria.numPeople) {
-      whereConditions.maxGuests = searchCriteria.numPeople;
+      whereConditions.maxGuests = {
+        [Op.gte]: searchCriteria.numPeople}; // Greater than or equal to
     }
+
+    // Add conditions for spaceType
+    if (searchCriteria.spaceType) {
+      whereConditions.spaceType = searchCriteria.spaceType;
+    }
+
+    // Add conditions for price range
+    if (searchCriteria.minPrice && searchCriteria.maxPrice) {
+      whereConditions.dailyPrice = {
+          [Op.between]: [searchCriteria.minPrice, searchCriteria.maxPrice],
+      };
+    }
+
+    // Add conditions for amenities
+    // Construct the amenities condition using Op.and
+    if (searchCriteria.amenities) {
+      whereConditions.amenities = {
+          [Op.and]: searchCriteria.amenities.map(amenity => {
+              return {
+                  [Op.like]: `%${amenity}%`
+              };
+          })
+      };
+  }
 
     try {
       const searchResults = await Listing.findAll({
         where: whereConditions,
+        order: [['dailyPrice', 'ASC']], // Sort by dailyPrice in ascending order
       });
   
       res.status(200).json({ results: searchResults });
@@ -134,6 +168,33 @@ const getListingById = async(req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to retrieve listing by id" });
+  }
+}
+
+const getAllUniqueSpaceTypes = async (req, res) => {
+  try {
+    const uniqueSpaceTypes = await Listing.findAll({
+      attributes: ['spaceType'],
+      group: ['spaceType'],
+    });
+
+    const spaceTypes = uniqueSpaceTypes.map((item) => item.spaceType);
+    res.status(200).json({message: spaceTypes});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to retrieve unique space types" });
+  }
+};
+
+
+const getMaxDailyPrice = async(req, res) => {
+  try {
+    Listing.max('dailyPrice').then(maxValue => {
+      res.status(200).json({message: maxValue});
+    });
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: "Failed to retrieve maximum daily price" });
   }
 }
 
@@ -213,6 +274,8 @@ module.exports = {
     getPlacesByLandlordId,
     getBookedPlacesByLandlordId,
     getListingById,
+    getAllUniqueSpaceTypes,
+    getMaxDailyPrice,
     updateListing,
-    deleteListing
+    deleteListing,
 }
