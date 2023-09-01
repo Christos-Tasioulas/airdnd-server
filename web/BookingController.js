@@ -9,10 +9,10 @@ const addBooking = async (req, res) => {
             date: req.body.date,
             checkIn: req.body.checkIn,
             checkOut: req.body.checkOut,
-            numGuests: req.body.numGuests,
+            numGuests: req.body.numPeople,
             price: req.body.price,
             userId: req.body.userId,
-            listingId: req.body.listingId
+            listingId: req.body.placeId
         });
     
         res.status(200).json({ message: "Booking created successfully" });
