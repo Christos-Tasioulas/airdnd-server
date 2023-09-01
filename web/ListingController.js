@@ -113,9 +113,12 @@ const addListing = async (req, res) => {
               };
           })
       };
-  }
+    }
 
     try {
+
+      whereConditions.isBooked = false
+
       const searchResults = await Listing.findAll({
         where: whereConditions,
         order: [['dailyPrice', 'ASC']], // Sort by dailyPrice in ascending order
@@ -244,6 +247,25 @@ const updateListing = async (req, res) => {
   }
 };
 
+const bookListing = async (req, res) => {
+  try {
+    const listingId = req.body.id
+    const updatedData = {
+      isBooked: true
+    }
+
+    await Listing.update(updatedData, {
+      where: { id: listingId },
+    });
+
+    res.status(200).json({ message: "Successfully booked" });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to book listing" });
+  }
+}
+
 const deleteListing = async (req, res) => {
   try {
     const listingId = req.params.id;
@@ -277,5 +299,6 @@ module.exports = {
     getAllUniqueSpaceTypes,
     getMaxDailyPrice,
     updateListing,
+    bookListing,
     deleteListing,
 }

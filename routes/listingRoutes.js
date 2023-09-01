@@ -7,8 +7,9 @@ router.get('/getPlacesByLandlordId/:id', listingController.getPlacesByLandlordId
 router.get('/getBookedPlacesByLandlordId/:id', listingController.getBookedPlacesByLandlordId) // get all booked places
 router.get('/getListingById/:id', listingController.getListingById)
 router.get('/getAllUniqueSpaceTypes', listingController.getAllUniqueSpaceTypes)
-router.put('/updateListing', listingController.updateListing)
-router.delete('/deleteListing/:id', listingController.deleteListing)
 router.get('/getMaxDailyPrice', listingController.getMaxDailyPrice)
+router.put('/updateListing', listingController.updateListing)
+router.put('/bookListing', listingController.bookListing)
+router.delete('/deleteListing/:id', listingController.deleteListing)
 
 module.exports = router
