@@ -1,7 +1,8 @@
-const { sequelize } = require('sequelize');
+const { Sequelize } = require('sequelize');
 const db = require('../model')
 const { Op, literal } = require('sequelize');
 const Listing = db.listings
+const Review = db.reviews
 
 // Request using POST method that adds a listing to the database
 const addListing = async (req, res) => {
@@ -266,6 +267,57 @@ const bookListing = async (req, res) => {
   }
 }
 
+const addReview = async (req, res) => {
+    
+  try {
+    const id = req.body.id;
+    console.log(id)
+
+    // Ensure the 'id' is valid and corresponds to an existing listing
+
+    const count = await Review.count({
+        where: {
+            listingId: id
+        }
+    });
+
+    console.log("Review Count:", count);
+
+    // Calculate the average rating
+    const result = await Review.findOne({
+        attributes: [
+            [Sequelize.fn('AVG', Sequelize.col('rating')), 'averageRating'],
+        ],
+        where: {
+            listingId: id
+        }
+    });
+
+    const averageRating = result.getDataValue('averageRating');
+    console.log("Average Rating:", averageRating);
+
+    if (isNaN(averageRating)) {
+        // Handle the case where 'averageRating' is not a number (e.g., it's NaN)
+        throw new Error("Average rating is not a number");
+    }
+
+    const updatedData = {
+        reviewCount: count,
+        reviewAvg: averageRating
+    };
+
+    await Listing.update(updatedData, {
+        where: { id: id },
+    });
+
+    res.status(200).json({ message: "Successfully added" });
+
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Failed to add review" });
+  }
+}
+
 const deleteListing = async (req, res) => {
   try {
     const listingId = req.params.id;
@@ -289,7 +341,6 @@ const deleteListing = async (req, res) => {
   }
 };
 
-
 module.exports = {
     addListing,
     searchListings,
@@ -300,5 +351,7 @@ module.exports = {
     getMaxDailyPrice,
     updateListing,
     bookListing,
+    addReview,
     deleteListing,
+    addReview
 }

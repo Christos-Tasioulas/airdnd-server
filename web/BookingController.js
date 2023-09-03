@@ -1,4 +1,4 @@
-const { sequelize } = require('sequelize');
+const { Sequelize } = require('sequelize');
 const db = require('../model')
 const { Op } = require("sequelize");
 const Booking = db.bookings

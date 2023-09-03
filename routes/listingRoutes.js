@@ -10,6 +10,7 @@ router.get('/getAllUniqueSpaceTypes', listingController.getAllUniqueSpaceTypes)
 router.get('/getMaxDailyPrice', listingController.getMaxDailyPrice)
 router.put('/updateListing', listingController.updateListing)
 router.put('/bookListing', listingController.bookListing)
+router.put('/addReview', listingController.addReview)
 router.delete('/deleteListing/:id', listingController.deleteListing)
 
 module.exports = router
