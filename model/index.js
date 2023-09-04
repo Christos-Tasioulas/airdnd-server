@@ -105,21 +105,21 @@ db.bookings.belongsTo(db.listings, {
   allowNull: false
 })
 
-db.users.hasMany(db.usersearches, {as: "userSearch"});
+db.users.hasMany(db.usersearches, {as: "usersearches"});
 db.usersearches.belongsTo(db.users, {
   foreignKey: "userId",
   as: "user",
   allowNull: false
 })
 
-db.users.hasMany(db.userlistings, {as: "userListing"});
+db.users.hasMany(db.userlistings, {as: "userlistings"});
 db.userlistings.belongsTo(db.users, {
   foreignKey: "userId",
   as: "user",
   allowNull: false
 })
 
-db.listings.hasMany(db.userlistings, {as: "userListing"});
+db.listings.hasMany(db.userlistings, {as: "userlistings"});
 db.userlistings.belongsTo(db.listings, {
   foreignKey: "listingId",
   as: "listing",
