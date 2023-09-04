@@ -1,11 +1,10 @@
 const { Sequelize } = require('sequelize');
 const db = require('../model')
 const { Op, literal } = require('sequelize');
-const UserSearch = db.userSearch
+const UserSearch = db.usersearches
 // const Review = db.reviews
 
-// Request using POST method that adds a listing to the database
-// const addListing = async (req, res) => {
+// Request using POST method that adds a search to the database
 
 const addUserSearch = async (req, res) => {
     try {
@@ -13,17 +12,17 @@ const addUserSearch = async (req, res) => {
             userId: req.body.userId,
             country: req.body.country,
             city: req.body.city,
-            neighborhood: req.body.country,
+            neighborhood: req.body.neighborhood,
             checkIn: req.body.checkIn,
             checkOut: req.body.checkOut,
-            maxGuests: req.body.country,
+            maxGuests: req.body.maxGuests,
         });
 
-        res.status(200).json({ message: "Booking created successfully" });
+        res.status(200).json({ message: "UserSearch created successfully" });
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Failed to create booking" });
+        res.status(500).json({ message: "Failed to create UserSearch" });
     }
 }
 

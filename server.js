@@ -104,10 +104,10 @@ const bookingRoutes = require('./routes/bookingRoutes.js')
 app.use('/booking', bookingRoutes)
 
 const userListingRoutes  = require('./routes/userListingRoutes.js')
-app.use('/userListingRoutes', userListingRoutes);
+app.use('/userListing', userListingRoutes);
 
 const userSearchRoutes  = require('./routes/userSearchRoutes.js')
-app.use('/userSearchRoutes', userSearchRoutes);
+app.use('/userSearch', userSearchRoutes);
 
 // Update Key Request
 const { updateKeys } = require('./configurations/updateKeys.js')
