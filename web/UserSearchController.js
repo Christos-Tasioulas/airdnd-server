@@ -13,8 +13,8 @@ const addUserSearch = async (req, res) => {
             country: req.body.country,
             city: req.body.city,
             neighborhood: req.body.neighborhood,
-            checkIn: req.body.checkIn,
-            checkOut: req.body.checkOut,
+            checkIn: req.body.checkInDate,
+            checkOut: req.body.checkOutDate,
             maxGuests: req.body.maxGuests,
         });
 
