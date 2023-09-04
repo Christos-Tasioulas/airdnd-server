@@ -15,7 +15,7 @@ const addUserSearch = async (req, res) => {
             neighborhood: req.body.neighborhood,
             checkIn: req.body.checkInDate,
             checkOut: req.body.checkOutDate,
-            maxGuests: req.body.maxGuests,
+            maxGuests: req.body.numPeople,
         });
 
         res.status(200).json({ message: "UserSearch created successfully" });
