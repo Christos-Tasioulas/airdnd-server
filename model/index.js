@@ -47,6 +47,12 @@ db.messages = require('./Message.js')(sequelize, DataTypes)
 // Adding a bookings table inside the database
 db.bookings = require('./Booking.js')(sequelize, DataTypes)
 
+// Adding a userSearch table inside the database
+db.usersearches = require('./UserSearch.js')(sequelize, DataTypes)
+
+// Adding a userListing table inside the database
+db.userlistings = require('./UserListing.js')(sequelize, DataTypes)
+
 // Allowing One to Many Association between users and listings
 db.users.hasMany(db.listings, { as: "listings" });
 db.listings.belongsTo(db.users, {
@@ -99,6 +105,26 @@ db.bookings.belongsTo(db.listings, {
   allowNull: false
 })
 
+db.users.hasMany(db.usersearches, {as: "userSearch"});
+db.usersearches.belongsTo(db.users, {
+  foreignKey: "userId",
+  as: "user",
+  allowNull: false
+})
+
+db.users.hasMany(db.userlistings, {as: "userListing"});
+db.userlistings.belongsTo(db.users, {
+  foreignKey: "userId",
+  as: "user",
+  allowNull: false
+})
+
+db.listings.hasMany(db.userlistings, {as: "userListing"});
+db.userlistings.belongsTo(db.listings, {
+  foreignKey: "listingId",
+  as: "listing",
+  allowNull: false
+})
 
 /* Command that allows us to re-sync the database with the server whenever a change
  * is made to the code or the database 

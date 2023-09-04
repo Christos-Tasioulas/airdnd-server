@@ -103,6 +103,12 @@ app.use('/message', messageRoutes)
 const bookingRoutes = require('./routes/bookingRoutes.js')
 app.use('/booking', bookingRoutes)
 
+const userListingRoutes  = require('./routes/userListingRoutes.js')
+app.use('/userListingRoutes', userListingRoutes);
+
+const userSearchRoutes  = require('./routes/userSearchRoutes.js')
+app.use('/userSearchRoutes', userSearchRoutes);
+
 // Update Key Request
 const { updateKeys } = require('./configurations/updateKeys.js')
 app.post('/updateKeys', updateKeys);
