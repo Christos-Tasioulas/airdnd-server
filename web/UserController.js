@@ -249,30 +249,6 @@ function matrixFactorization(index, userItemMatrix) {
 
 }
 
-// async function getEntryByIndex(index) {
-//   try {
-
-//     const entries = await Listing.findAll({
-//     });
-
-//     if (entries.length === 0) {
-//       console.log('Entry not found.');
-//       return null;
-//     }
-
-//     const entry = entries[index]; // Assuming you want the first entry from the page
-
-//     // You now have the entry by index
-//     console.log('Entry by index:', entry.id);
-
-//     return entry;
-    
-//   } catch (error) {
-//     console.error('Error getting entry by index:', error);
-//     return null;
-//   }
-// }
-
 const recommend = async (req, res) => {
   try {
 
