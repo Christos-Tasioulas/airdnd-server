@@ -275,13 +275,11 @@ const addReview = async (req, res) => {
 
     // Ensure the 'id' is valid and corresponds to an existing listing
 
-    const count = await Review.count({
+    const listing = await Listing.findOne({
         where: {
-            listingId: id
+            id: id
         }
     });
-
-    console.log("Review Count:", count);
 
     // Calculate the average rating
     const result = await Review.findOne({
@@ -302,7 +300,7 @@ const addReview = async (req, res) => {
     }
 
     const updatedData = {
-        reviewCount: count,
+        reviewCount: listing.reviewCount + 1,
         reviewAvg: averageRating
     };
 
