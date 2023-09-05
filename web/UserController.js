@@ -370,6 +370,8 @@ const recommend = async (req, res) => {
       recommended_places = [...recommended_places, entries[topRecommendations[i].itemIndex]]
     }
 
+    recommended_places = recommended_places.sort(((a, b) => a.dailyPrice - b.dailyPrice))
+
     res.status(200).json({message: recommended_places})
     
   } catch (error) {
