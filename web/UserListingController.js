@@ -21,6 +21,7 @@ const addUserListing = async (req, res) => {
   }
 };
 
+// Request using GET method that retrieves the userListings with the userId and listingId given as foreignKeys from the parameters of the request
 const getUserListing = async(req, res) => {
 
   const userId = req.params.userId;
@@ -37,6 +38,7 @@ const getUserListing = async(req, res) => {
   }
 }
 
+// Request using PUT method that increases by one the entry's with the userId and listingId given as foreignKeys from the parameters of the request visitcount 
 const incrementUserListing = async(req, res) => {
   const userId = req.body.userId;
   const listingId = req.body.listingId;

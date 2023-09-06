@@ -2,10 +2,8 @@ const { Sequelize } = require('sequelize');
 const db = require('../model')
 const { Op, literal } = require('sequelize');
 const UserSearch = db.usersearches
-// const Review = db.reviews
 
 // Request using POST method that adds a search to the database
-
 const addUserSearch = async (req, res) => {
     try {
         await UserSearch.create({

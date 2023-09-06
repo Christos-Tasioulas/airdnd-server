@@ -1,5 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
+    // Booking Table and its attributes
     const Booking = sequelize.define("booking", {
         id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement:true, allowNull: false},
         date: {type: DataTypes.DATEONLY, allowNull: false},

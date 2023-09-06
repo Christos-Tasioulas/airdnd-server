@@ -25,6 +25,7 @@ const addReview = async (req, res) => {
     }
 };
 
+// Request using GET method that retrieves the reviews with the listingId given as foreignKey from the parameters of the request
 const getReviewsByListingId = async (req, res) => {
   
   const id = req.params.id;
@@ -41,6 +42,7 @@ const getReviewsByListingId = async (req, res) => {
   
 }
 
+// Request using GET method that retrieves the reviews with the landlordId given as foreignKey from the parameters of the request
 const getReviewsByLandlordId = async (req, res) => {
   
   const id = req.params.id;
@@ -57,6 +59,7 @@ const getReviewsByLandlordId = async (req, res) => {
   
 }
 
+// Request using GET method that retrieves the reviews with the landlordId given as foreignKey from the parameters of the request
 const countReviewsByLandlordId = async (req, res) => {
   const id = req.params.id
 

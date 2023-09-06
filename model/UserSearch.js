@@ -1,6 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
 
     const UserSearch = sequelize.define("usersearches", {
+
+        // userSearch table and its attributes
         id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement:true, allowNull: false},
         country: {type: DataTypes.STRING, allowNull: true},
         city: {type: DataTypes.STRING, allowNull: true},

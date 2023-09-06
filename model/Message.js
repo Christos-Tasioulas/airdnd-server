@@ -1,5 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
+    // Message Table and its attributes
     const Message = sequelize.define("message", {
         messageId: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement:true, allowNull: false}, 
         receiverUsername: {type: DataTypes.STRING, allowNull: false},

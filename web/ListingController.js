@@ -47,6 +47,7 @@ const addListing = async (req, res) => {
     }
   };
 
+  // Request using GET method that returns all the listings with the given search query parameters (some of them can be empty)
   const searchListings = async (req, res) => {
 
     const searchCriteria = {
@@ -132,7 +133,7 @@ const addListing = async (req, res) => {
     }
   };
 
-
+// Request using GET method that returns all the listings with the given landlordId as foreignKey from the url parameters
 const getPlacesByLandlordId = async(req, res) => {
   const landlordId = req.params.id
 
@@ -147,6 +148,7 @@ const getPlacesByLandlordId = async(req, res) => {
   }
 }
 
+// Request using GET method that returns all the listings with the given landlordId as foreignKey from the url parameters, that also have isBooked value equal to true
 const getBookedPlacesByLandlordId = async(req, res) => {
   const landlordId = req.params.id
 
@@ -161,6 +163,7 @@ const getBookedPlacesByLandlordId = async(req, res) => {
   }
 }
 
+// Request using GET method that returns the listing with the given id from the url parameters
 const getListingById = async(req, res) => {
   const id = req.params.id
 
@@ -175,6 +178,7 @@ const getListingById = async(req, res) => {
   }
 }
 
+// Request using GET method that returns all unique values of spaceType in the table 
 const getAllUniqueSpaceTypes = async (req, res) => {
   try {
     const uniqueSpaceTypes = await Listing.findAll({
@@ -190,7 +194,7 @@ const getAllUniqueSpaceTypes = async (req, res) => {
   }
 };
 
-
+// Request using GET method that returns the max value of dailyPrice in the table 
 const getMaxDailyPrice = async(req, res) => {
   try {
     Listing.max('dailyPrice').then(maxValue => {
@@ -248,6 +252,7 @@ const updateListing = async (req, res) => {
   }
 };
 
+// Request using PUT method that sets the entry's with the listingId given from the body isBooked to true
 const bookListing = async (req, res) => {
   try {
     const listingId = req.body.id
@@ -267,6 +272,7 @@ const bookListing = async (req, res) => {
   }
 }
 
+// Request using PUT method that increases by one the entry's with the listingId given from the body reviewCount and recalculates the reviewAvg
 const addReview = async (req, res) => {
     
   try {
@@ -274,7 +280,6 @@ const addReview = async (req, res) => {
     console.log(id)
 
     // Ensure the 'id' is valid and corresponds to an existing listing
-
     const listing = await Listing.findOne({
         where: {
             id: id
@@ -300,6 +305,7 @@ const addReview = async (req, res) => {
     }
 
     const updatedData = {
+        // increase review count by 1
         reviewCount: listing.reviewCount + 1,
         reviewAvg: averageRating
     };
@@ -316,6 +322,7 @@ const addReview = async (req, res) => {
   }
 }
 
+// Request using DELETE method that deletes the listing with the id given from the parameters of the request
 const deleteListing = async (req, res) => {
   try {
     const listingId = req.params.id;

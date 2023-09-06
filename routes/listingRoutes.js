@@ -1,6 +1,8 @@
 const listingController = require('../web/ListingController.js')
 const router = require('express').Router()
 
+// These are all the paths that the server app includes as far as the listing table is concerned
+
 router.post('/addListing', listingController.addListing)
 router.get('/searchListings', listingController.searchListings)
 router.get('/getPlacesByLandlordId/:id', listingController.getPlacesByLandlordId) // get all owned places

@@ -1,6 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
 
     const Listing = sequelize.define("listing", {
+
+        // Listing Table and its attributes
         id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement:true, allowNull: false},
         name: {type: DataTypes.STRING, allowNull: false},
         address: {type: DataTypes.STRING, allowNull: false},

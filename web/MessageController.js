@@ -23,6 +23,7 @@ const addMessage = async (req, res) => {
     }
 };
 
+// Request using GET method that retrieves the message with the id given from the parameters of the request
 const getMessageById = async (req, res) => {
   const id = req.params.id
 
@@ -38,6 +39,7 @@ const getMessageById = async (req, res) => {
   }
 }
 
+// Request using GET method that retrieves the messages with the userId given as foreignKey from the parameters of the request
 const getMessagesByUser = async (req, res) => {
   const id = req.params.id
 
@@ -55,6 +57,7 @@ const getMessagesByUser = async (req, res) => {
   }
 }
 
+// Request using DELETE method that deletes the message with the id given from the parameters of the request
 const deleteMessage = async (req, res) => {
   try {
     const messageId = req.params.id;

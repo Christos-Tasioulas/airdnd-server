@@ -32,13 +32,13 @@ const addUser = async (req, res) => {
   }
 };
 
+// Request using POST method that generates and returns the JWT for the user
 const generateToken = async (req, res) => {
-  // Validate User Here
-  // Then generate JWT Token
 
   let jwtSecretKey = process.env.JWT_SECRET_KEY;
   const expiresIn = '1h'; // Token will expire in 1 hour
 
+  // Token payload {date, id, username, password, role booleans}
   let data = {
     time: Date(),
     id: req.body.id,
@@ -48,6 +48,7 @@ const generateToken = async (req, res) => {
     isLandlord: req.body.isLandlord,
     isTenant: req.body.isTenant
   }
+
 
   const token = jwt.sign(data, jwtSecretKey, { expiresIn });
 
@@ -109,6 +110,7 @@ const getUserByUsername = async (req, res) => {
   }
 };
 
+// Request using GET that validates the JWT given in the header
 const validateToken = async (req, res) => {
   let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
   let jwtSecretKey = process.env.JWT_SECRET_KEY;
@@ -128,6 +130,7 @@ const validateToken = async (req, res) => {
   }
 };
 
+// Request using GET that decodes and parses the JWT given in the header
 const decodeToken = async (req, res) => {
 
   let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
@@ -164,6 +167,10 @@ const decodeToken = async (req, res) => {
   }
 }
 
+// Assistant functions
+
+// function that standardizes data values using standardized normal distribution
+// (X-μ)/σ
 function standardization(mean, std, value) {
   if(std !== 0) {
     return (value - mean) / std
@@ -171,6 +178,8 @@ function standardization(mean, std, value) {
   else return value
 }
 
+// function that standardizes data values representing data frequencies
+// (X-min)/(max-min)
 function minMaxScale(min, max, value) {
   if(max !== min)
   {
@@ -179,6 +188,7 @@ function minMaxScale(min, max, value) {
   else return value
 }
 
+// function that tests the data evaluation using the user and item factors (matrix factorization)
 function predictRating(userVector, itemVector, numLatentFactors) {
   let rating = 0;
   for (let k = 0; k < numLatentFactors; k++) {
@@ -187,17 +197,20 @@ function predictRating(userVector, itemVector, numLatentFactors) {
   return rating;
 }
 
+// Matrix Factorization
 function matrixFactorization(index, userItemMatrix) {
-  const numUsers = userItemMatrix.length
-  const numItems = userItemMatrix[0].length
-  const numLatentFactors = 7; 
-  const learningRate = 0.01; 
-  const regularization = 0.05; 
-  const maxIterations = 1000; 
+
+  const numUsers = userItemMatrix.length // rows
+  const numItems = userItemMatrix[0].length // columns
+  const numLatentFactors = 7; // 7 are the columns of the userListing Params table
+  const learningRate = 0.01; // Steady learning rate not so slow, not so uneffective
+  const regularization = 0.05; // Hyperparameter for Stochastic Gradient Descent
+  const maxIterations = 1000; // The training will last 1000 iterations
 
   let UserFeatures = []
   let ItemFeatures = []
 
+  // Initializing arrays with 0's
   for (let i = 0; i < numUsers; i++) {
       UserFeatures.push(new Array(numLatentFactors).fill(0));
   }
@@ -205,6 +218,7 @@ function matrixFactorization(index, userItemMatrix) {
       ItemFeatures.push(new Array(numLatentFactors).fill(0));
   }
 
+  // Initializing matrices with random values
   for (let i = 0; i < numUsers; i++) {
       for (let j = 0; j < numLatentFactors; j++) {
           UserFeatures[i][j] = Math.random() * 0.15;
@@ -216,14 +230,19 @@ function matrixFactorization(index, userItemMatrix) {
       }
   }
 
-  // Stochastic Gradient Descent
+  // Matrix Factorization using Stochastic Gradient Descent
   for (let iteration = 0; iteration < maxIterations; iteration++) {
     for (let i = 0; i < numUsers; i++) {
       for (let j = 0; j < numItems; j++) {
         if (userItemMatrix[i][j] !== 0) {
+          // Computing error
           const error = userItemMatrix[i][j] - predictRating(UserFeatures[i], ItemFeatures[j]);
+
           for (let k = 0; k < numLatentFactors; k++) {
+            // Storing the previous value for user
             const UserFeaturesTemp = UserFeatures[i][k];
+
+            // performing SGD to both matrices using the hyperparameters
             UserFeatures[i][k] += learningRate * (2 * error * ItemFeatures[j][k] - 2 * regularization * UserFeatures[i][k]);
             ItemFeatures[j][k] += learningRate * (2 * error * UserFeaturesTemp - 2 * regularization * ItemFeatures[j][k]);
           }
@@ -239,7 +258,7 @@ function matrixFactorization(index, userItemMatrix) {
     predictedRatings.push(predictRating(userRow, ItemFeatures[j]));
   }
 
-  // Sort and retrieve top recommendations
+  // Sort and retrieve top recommendations according to top rating by the algorithm
   const topRecommendations = predictedRatings
   .map((rating, itemIndex) => ({ itemIndex, rating }))
   .sort((a, b) => b.rating - a.rating)
@@ -249,12 +268,14 @@ function matrixFactorization(index, userItemMatrix) {
 
 }
 
+// Request using GET that returns the top 10 recommendations for the user with the id given from the url parameters
 const recommend = async (req, res) => {
   try {
 
     const id = req.params.id;
     const userId = parseInt(id, 10); // Convert the id to an integer
 
+    // Finding the user
     const user = await User.findOne({
       where: {
         id: userId, // Use the converted userId for the query
@@ -263,6 +284,7 @@ const recommend = async (req, res) => {
 
     let index;
 
+    // Finding the user by index
     if (user !== null) {
       console.log('User found');
 
@@ -277,6 +299,7 @@ const recommend = async (req, res) => {
       res.status(404).json({ message: 'User Not Found.' });
     }
 
+    // Constructing the UserItem matrix
     const users = await User.findAll()
 
     const listings = await Listing.findAll()
@@ -288,6 +311,7 @@ const recommend = async (req, res) => {
     const usersLength = userItemMatrix.length;
     const listingsLength = userItemMatrix[0].length;
 
+    // using the sum of all the fields from userListsingsParams as values
     for(let i = 0; i < usersLength; i++) {
       for(let j = 0; j < listingsLength; j++) {
         
@@ -298,9 +322,11 @@ const recommend = async (req, res) => {
           }
         })
 
+        // getting all table columns
         const columns = await UserListingParams.rawAttributes
         for (var key in columns) {
 
+          // Standardizing rating and visit count values
           if (key === 'rating' || key === 'visitCount') {
 
             const meanResult = await UserListingParams.findOne({
@@ -309,8 +335,8 @@ const recommend = async (req, res) => {
               ],
             })
 
+            // getting the mean value of the column
             const meanValue = meanResult.getDataValue('meanValue');
-            // console.log("mean for " + key + " : " + meanValue)
 
             const stdResult = await UserListingParams.findOne({
               attributes: [
@@ -318,15 +344,15 @@ const recommend = async (req, res) => {
               ],
             })
 
+            // getting the standard deviation of the column
             const standardDeviation = parseFloat(stdResult.getDataValue('standardDeviation'));
-            // console.log("standard deviation for " + key + " : " + standardDeviation)
 
             const value = standardization(meanValue, standardDeviation, userlistingparams[key])
             
             userItemMatrix[i][j] += value
 
-          }
-          else if (
+          // minmax scaling all the other columns
+          } else if (
             key === "timesHasBooked" || 
             key === "timesHasSearchedCountry" || 
             key === "timeshasSearchedCity" ||
@@ -360,16 +386,22 @@ const recommend = async (req, res) => {
       }
     }
 
+    // calling the matrix factorization that returns each recommendation as an object
+    // {itemIndex, rating} with itemIndex being the index of the listing in the data table 
+    // and rating being its rating from the matrix factorization
     const topRecommendations = matrixFactorization(index, userItemMatrix)
 
     let recommended_places = []
 
+    // Getting all Listings
     const entries = await Listing.findAll({});
     
+    // Appending to the returning list all entries with the indexes given
     for(let i=0; i<topRecommendations.length; i++) {
       recommended_places = [...recommended_places, entries[topRecommendations[i].itemIndex]]
     }
 
+    // sorting the reccomendations by ascending daily price
     recommended_places = recommended_places.sort(((a, b) => a.dailyPrice - b.dailyPrice))
 
     res.status(200).json({message: recommended_places})

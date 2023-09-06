@@ -11,6 +11,7 @@ const fileUpload = require('express-fileupload');
 
 const app = express()
 
+// Configuring the key and certificate for SSL/TLS protocol usage
 const httpsServer = https.createServer(
     {
         key: fs.readFileSync(path.join(__dirname, 
@@ -26,6 +27,7 @@ dotenv.config({ path: './configurations/Config.env' });
 
 const port = process.env.PORT
 const host = process.env.HOST
+
 // Define the allowed origins
 const allowedOrigins = [
     'https://localhost:3000'
@@ -97,18 +99,23 @@ app.use('/listing', listingRoutes)
 const reviewRoutes = require('./routes/reviewRoutes.js')
 app.use('/review', reviewRoutes)
 
+// Message Routes
 const messageRoutes = require('./routes/messageRoutes.js')
 app.use('/message', messageRoutes)
 
+// Booking Routes
 const bookingRoutes = require('./routes/bookingRoutes.js')
 app.use('/booking', bookingRoutes)
 
+// UserListing Routes
 const userListingRoutes  = require('./routes/userListingRoutes.js')
 app.use('/userListing', userListingRoutes);
 
+// UserSearch Routes
 const userSearchRoutes  = require('./routes/userSearchRoutes.js')
 app.use('/userSearch', userSearchRoutes);
 
+// UserListingParams Routes
 const userListingParamsRoutes  = require('./routes/userListingParamsRoutes.js')
 app.use('/userListingParams', userListingParamsRoutes);
 

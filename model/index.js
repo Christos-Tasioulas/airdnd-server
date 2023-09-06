@@ -75,13 +75,14 @@ db.reviews.belongsTo(db.users, {
   as: "Landlord"
 });
 
-// Allowing One to Many Association between users and listings
+// Allowing One to Many Association between listings and reviews
 db.listings.hasMany(db.reviews, { as: "reviews" });
 db.reviews.belongsTo(db.listings, {
   foreignKey: "listingId",
   as: "Listing",
 }); 
 
+// Allowing two One to Many Associations between users and messages
 db.users.hasMany(db.messages, { as: "messages" });
 db.messages.belongsTo(db.users, {
   foreignKey: "userId",
@@ -94,6 +95,7 @@ db.messages.belongsTo(db.users, {
   allowNull: false 
 });
 
+// Allowing One to Many Association between users and bookings
 db.users.hasMany(db.bookings, { as: "bookings" });
 db.bookings.belongsTo(db.users, {
   foreignKey: "userId",
@@ -101,6 +103,7 @@ db.bookings.belongsTo(db.users, {
   allowNull: false
 })
 
+// Allowing One to Many Association between listings and bookings
 db.listings.hasMany(db.bookings, { as: "bookings" });
 db.bookings.belongsTo(db.listings, {
   foreignKey: "listingId",
@@ -108,6 +111,7 @@ db.bookings.belongsTo(db.listings, {
   allowNull: false
 })
 
+// Allowing One to Many Association between users and usersearches
 db.users.hasMany(db.usersearches, {as: "usersearches"});
 db.usersearches.belongsTo(db.users, {
   foreignKey: "userId",
@@ -115,6 +119,7 @@ db.usersearches.belongsTo(db.users, {
   allowNull: false
 })
 
+// Allowing One to Many Association between users and userlistings
 db.users.hasMany(db.userlistings, {as: "userlistings"});
 db.userlistings.belongsTo(db.users, {
   foreignKey: "userId",
@@ -122,6 +127,7 @@ db.userlistings.belongsTo(db.users, {
   allowNull: false
 })
 
+// Allowing One to Many Association between listing and userlistings
 db.listings.hasMany(db.userlistings, {as: "userlistings"});
 db.userlistings.belongsTo(db.listings, {
   foreignKey: "listingId",
@@ -129,6 +135,7 @@ db.userlistings.belongsTo(db.listings, {
   allowNull: false
 })
 
+// Allowing One to Many Association between users and userlistingsparams
 db.users.hasMany(db.userlistingsparams, {as: "userlistingsparams"});
 db.userlistingsparams.belongsTo(db.users, {
   foreignKey: "userId",
@@ -136,6 +143,7 @@ db.userlistingsparams.belongsTo(db.users, {
   allowNull: false
 })
 
+// Allowing One to Many Association between listings and userlistingsparams
 db.listings.hasMany(db.userlistingsparams, {as: "userlistingsparams"});
 db.userlistingsparams.belongsTo(db.listings, {
   foreignKey: "listingId",

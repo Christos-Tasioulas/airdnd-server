@@ -3,6 +3,7 @@ const db = require('../model')
 const { Op } = require("sequelize");
 const Booking = db.bookings
 
+// Request using POST method that adds a booking to the database
 const addBooking = async (req, res) => {
     try {
         await Booking.create({

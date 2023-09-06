@@ -9,8 +9,7 @@ const UserListing = db.userlistings
 const UserSearch = db.usersearches
 const UserListingParams = db.userlistingsparams
 
-// Request using POST method that adds a search to the database
-
+// Request using POST method that adds a search to the database (called at will)
 const createMatrixValues = async (req, res) => {
     try {
   
@@ -21,6 +20,7 @@ const createMatrixValues = async (req, res) => {
       for (var user of users) {
         for (var listing of listings) {
 
+            // Finding the average of all current user reviews for the current listing
             let result = await Review.findOne({
                 attributes: [
                     [Sequelize.fn('AVG', Sequelize.col('rating')), 'averageRating'],
@@ -46,12 +46,14 @@ const createMatrixValues = async (req, res) => {
             
             let visitCount = 0
 
+            // Finding the times the user has visited the listing info
             if (userListings !== []) {
                 for (var userListing in userListings) {
                     visitCount += userListing.visitCount
                 }
             }
         
+            // Finding the times the user has booked the listing
             const timesHasBooked = await Booking.count({
                 where: {
                     userId: user.id,
@@ -59,6 +61,7 @@ const createMatrixValues = async (req, res) => {
                 }
             })
 
+            // Finding the times the user has searched the listing's country
             const timesHasSearchedCountry = await UserSearch.count({
                 where: {
                     userId: user.id,
@@ -66,6 +69,7 @@ const createMatrixValues = async (req, res) => {
                 }
             })
 
+            // Finding the times the user has searched the listing's city
             const timesHasSearchedCity = await UserSearch.count({
                 where: {
                     userId: user.id,
@@ -73,6 +77,7 @@ const createMatrixValues = async (req, res) => {
                 }
             })
 
+            // Finding the times the user has searched the listing's neighborhood
             const timesHasSearchedNeighborhood = await UserSearch.count({
                 where: {
                     userId: user.id,
@@ -80,6 +85,7 @@ const createMatrixValues = async (req, res) => {
                 }
             })
 
+            // Finding the times the user has searched the listing's amount of MaxGuests
             const timesHasSearchedMaxGuests = await UserSearch.count({
                 where: {
                     userId: user.id,
@@ -109,6 +115,7 @@ const createMatrixValues = async (req, res) => {
     }
 }
 
+// Request using DELETE that deleted all entries from the table (called at will)
 const deleteMatrixValues = async(req, res) => {
     
     UserListingParams.destroy({
