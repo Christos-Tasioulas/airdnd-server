@@ -236,7 +236,7 @@ function matrixFactorization(index, userItemMatrix) {
       for (let j = 0; j < numItems; j++) {
         if (userItemMatrix[i][j] !== 0) {
           // Computing error
-          const error = userItemMatrix[i][j] - predictRating(UserFeatures[i], ItemFeatures[j]);
+          const error = userItemMatrix[i][j] - predictRating(UserFeatures[i], ItemFeatures[j], numLatentFactors);
 
           for (let k = 0; k < numLatentFactors; k++) {
             // Storing the previous value for user
@@ -255,7 +255,7 @@ function matrixFactorization(index, userItemMatrix) {
   const userRow = UserFeatures[index]
   const predictedRatings = [];
   for (let j = 0; j < numItems; j++) {
-    predictedRatings.push(predictRating(userRow, ItemFeatures[j]));
+    predictedRatings.push(predictRating(userRow, ItemFeatures[j], numLatentFactors));
   }
 
   // Sort and retrieve top recommendations according to top rating by the algorithm
@@ -402,7 +402,7 @@ const recommend = async (req, res) => {
     }
 
     // sorting the reccomendations by ascending daily price
-    recommended_places = recommended_places.sort(((a, b) => a.dailyPrice - b.dailyPrice))
+    // recommended_places = recommended_places.sort(((a, b) => a.dailyPrice - b.dailyPrice))
 
     res.status(200).json({message: recommended_places})
     

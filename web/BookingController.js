@@ -23,6 +23,26 @@ const addBooking = async (req, res) => {
       }
 }
 
+// Request using GET method that returns all bookings with the given userId as foreignKey from the url parameters
+const getBookingsByUserId = async(req, res) => {
+  try {
+    const id = req.params.id
+    
+    const bookings = await Booking.findAll({
+      where: {
+        userId: id
+      }
+    }) 
+
+    res.status(200).json({ message: bookings})
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to get bookings by userId" });
+  }
+}
+
 module.exports = {
-    addBooking
+    addBooking,
+    getBookingsByUserId
 }
